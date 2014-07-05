@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ball.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="FormView.cs">
       <SubType>Form</SubType>

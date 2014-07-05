@@ -21,16 +21,27 @@ namespace onPong
             Left, Right, Up, Down, Stop
         }
 
-        //private player play = new player();
-        //private int[] cords = new int[2];
-        //private Graphics player;
+        private player play = new player();
+        private ball ballPlayer = new ball();
+        
+        //Player chords 
+        private Position objPosition;
         private int x;
         private int y;
+
+        //Ball chords and bool for collisions
+        private Position ballPosition;
         private int ballx;
         private int bally;
+        private Boolean aiCollision = false;
+        private Boolean playerCollision = false;
+
+        //score counter + timer
         private int enemyCounter;
-        private Position objPosition;
-        private Position ballPosition;
+        private int test = 10000;
+        
+        
+
         //Stuff for font and numbers
         private Font drawFont = new Font("Arial", 16);
         private RectangleF drawRect = new RectangleF(50, 50, 50, 50);
@@ -67,7 +78,18 @@ namespace onPong
 
             //print score on screen 
             drawFormat.Alignment = StringAlignment.Center;
-            e.Graphics.DrawString(String.Format("{0}", enemyCounter), drawFont, Brushes.Black, drawRect, drawFormat); 
+            e.Graphics.DrawString(String.Format("{0}", enemyCounter), drawFont, Brushes.Black, drawRect, drawFormat);
+
+            //player position
+            e.Graphics.DrawString(String.Format("x = {0}", x), drawFont, Brushes.Black, new RectangleF(100,100,50,50), drawFormat);
+            e.Graphics.DrawString(String.Format("y = {0}", y), drawFont, Brushes.Black, new RectangleF(100, 100,350, 50), drawFormat); 
+
+            //ball position
+            e.Graphics.DrawString(String.Format("x = {0}", ballx), drawFont, Brushes.Black, new RectangleF(100, 100, 650, 50), drawFormat);
+            e.Graphics.DrawString(String.Format("y = {0}", bally), drawFont, Brushes.Black, new RectangleF(100, 100, 950, 50), drawFormat); 
+
+
+
             //e.Graphics.DrawImage(new Bitmap("slig.png"), x, y, 100, 100);
         }
 
@@ -158,34 +180,55 @@ namespace onPong
          */
         private void moveBall()
         {
-            //The balls move
+            playerCollision = ballPlayer.hasCollisionPlayer(x, y, ballx, bally);
+            aiCollision = ballPlayer.hasCollisionAI();
+
+            //Ball is moving left, if there is a collision move ball right 
             if (ballPosition == Position.Left)
             {
-                if (ballx >= 0)
+                ballx -= 7;
+                //ball hit player
+                if (playerCollision == true)
                 {
-                    {
-                        ballx -= 7;
-                        if (ballx <= 0)
-                        {
-                            enemyCounter += 1;
-                            ballPosition = Position.Right;
-                        }
-                        Invalidate();
-                    }
+                    ballMoveRight();
+                    playerCollision = false;
+                }
+                //ball hit wall, increase points and reset ball
+                else if (ballx <= 0)
+                {
+                    enemyCounter += 1;
+                    ballMoveRight();
                 }
             }
+
+            //The balls move
             else if (ballPosition == Position.Right)
             {
-                if (ballx < this.Width)
+                ballx += 7;
+                if (ballx >= this.Width)
                 {
-                    ballx += 7;
-                    if (ballx >= this.Width - 50)
-                    {
-                        ballPosition = Position.Left;
-                    }
-                    Invalidate();
+                    ballMoveLeft();
                 }
             }
+
+            //Draw new screen
+            Invalidate();
+        }
+
+        /*
+         * Moves ball to right 
+         */
+        private void ballMoveRight()
+        {
+             ballPosition = Position.Right;
+        }
+
+        /*
+         * Moves ball to left
+         */
+        private void ballMoveLeft()
+        {
+            ballPosition = Position.Left;
         }
 
         private void enemyPoint()
