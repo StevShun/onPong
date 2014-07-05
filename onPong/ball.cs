@@ -8,8 +8,6 @@ namespace onPong
 {
     class ball
     {
-        private Boolean collision = false;
-
         public Boolean hasCollisionPlayer(int x, int y, int ballx, int bally)
         {
             //collision
@@ -18,9 +16,12 @@ namespace onPong
             else return false;
         }
 
-        public Boolean hasCollisionAI()
+        public Boolean hasCollisionAI(int x, int y, int ballx, int bally)
         {
-            return collision;
+            //collision
+            if ((ballx >= x - 25 && ballx <= x + 25) && (bally < y + 75 && bally > y - 75))
+                return true;
+            else return false;
         }
     }
 }
