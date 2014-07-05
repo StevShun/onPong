@@ -35,13 +35,11 @@ namespace onPong
         private int bally;
         private Boolean aiCollision = false;
         private Boolean playerCollision = false;
+        private int ballSpeed = 7;
 
         //score counter + timer
         private int enemyCounter;
-        private int test = 10000;
         
-        
-
         //Stuff for font and numbers
         private Font drawFont = new Font("Arial", 16);
         private RectangleF drawRect = new RectangleF(50, 50, 50, 50);
@@ -101,7 +99,6 @@ namespace onPong
         {
             movePlayer();
             moveBall();
-            enemyPoint();
         }
 
         /*
@@ -143,7 +140,7 @@ namespace onPong
          */ 
         private void movePlayer()
         {
-            //My move
+            //My move these first two would control left and right, these are diables as of now 
             if (objPosition == Position.Right)
             {
                 x += 10;
@@ -183,32 +180,18 @@ namespace onPong
             playerCollision = ballPlayer.hasCollisionPlayer(x, y, ballx, bally);
             aiCollision = ballPlayer.hasCollisionAI();
 
-            //Ball is moving left, if there is a collision move ball right 
+            //Ball is moving left
             if (ballPosition == Position.Left)
             {
-                ballx -= 7;
-                //ball hit player
-                if (playerCollision == true)
-                {
-                    ballMoveRight();
-                    playerCollision = false;
-                }
-                //ball hit wall, increase points and reset ball
-                else if (ballx <= 0)
-                {
-                    enemyCounter += 1;
-                    ballMoveRight();
-                }
+                ballx -= ballSpeed;
+                ballMoveRight();
             }
 
             //The balls move
             else if (ballPosition == Position.Right)
             {
-                ballx += 7;
-                if (ballx >= this.Width)
-                {
-                    ballMoveLeft();
-                }
+                ballx += ballSpeed;
+                ballMoveLeft();
             }
 
             //Draw new screen
@@ -216,24 +199,37 @@ namespace onPong
         }
 
         /*
-         * Moves ball to right 
+         * Moves ball to right if there is a collision with ball moving to left 
          */
         private void ballMoveRight()
         {
-             ballPosition = Position.Right;
+            //ball hit player
+            if (playerCollision == true)
+            {
+                ballPosition = Position.Right;
+                playerCollision = false;
+                ballSpeed = ballSpeed + 2;
+            }
+            //ball hit wall, increase points and reset ball
+            else if (ballx <= 0)
+            {
+                ballSpeed = 7;
+                enemyCounter += 1;
+                ballPosition = Position.Right;
+            }
+            
         }
 
         /*
-         * Moves ball to left
+         * Moves ball to left ig there is a collision with ball moving to right 
          */
         private void ballMoveLeft()
         {
-            ballPosition = Position.Left;
-        }
-
-        private void enemyPoint()
-        {
-            
+            //Collision with wall, move ball to left 
+            if (ballx >= this.Width)
+            {
+                ballPosition = Position.Left;
+            }
         }
     }
 }
