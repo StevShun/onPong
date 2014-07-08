@@ -11,7 +11,7 @@ namespace onPong
         public Boolean hasCollisionPlayer(int x, int y, int ballx, int bally)
         {
             //collision
-            if ((ballx >= x - 25 && ballx <= x + 25) && (bally < y + 75 && bally > y - 75))
+            if ((ballx >= x && ballx <= x + 25) && (bally <= y + 150 && bally >= y))
                 return true;
             else return false;
         }
@@ -19,7 +19,7 @@ namespace onPong
         public Boolean hasCollisionAI(int x, int y, int ballx, int bally)
         {
             //collision
-            if ((ballx >= x - 25 && ballx <= x + 25) && (bally < y + 75 && bally > y - 75))
+            if ((ballx >= x && ballx <= x + 25) && (bally <= y + 150 && bally >= y))
                 return true;
             else return false;
         }

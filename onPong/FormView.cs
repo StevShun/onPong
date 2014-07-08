@@ -87,7 +87,7 @@ namespace onPong
             //Print both players and ball on screen 
             e.Graphics.FillRectangle(Brushes.Black, x, y, 30, 150);
             e.Graphics.FillRectangle(Brushes.Black, ballx, bally, 50, 50);
-            e.Graphics.FillRectangle(Brushes.Black, aix, aiy, 30, 150);
+            e.Graphics.FillRectangle(Brushes.Black, this.Width - 100, aiy, 30, 150);
 
             //print score on screen 
             drawFormat.Alignment = StringAlignment.Center;
@@ -333,7 +333,7 @@ namespace onPong
 
         private void moveAI()
         {
-            if (bally > aiy)
+            if (bally > aiy + 75)
             {
                 aiy += 7;
             }
