@@ -333,11 +333,22 @@ namespace onPong
 
         private void moveAI()
         {
-            if (bally > aiy + 75)
+            if (aiy + 150 <= this.Height && aiy > 0)
+            {
+                if (bally > aiy + 75)
+                {
+                    aiy += 7;
+                }
+                else aiy -= 7;
+            }
+            else if (aiy + 150 >= this.Height)
+            {
+                aiy -= 7;
+            }
+            else
             {
                 aiy += 7;
             }
-            else aiy -= 7;
         }
     }
 }
